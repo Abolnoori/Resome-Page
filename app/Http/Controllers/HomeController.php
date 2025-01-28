@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use function PHPSTORM_META\type;
 
+use function Laravel\Prompts\error;
+use function PHPSTORM_META\type;
 use App\Models\Bot;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
@@ -15,120 +16,67 @@ use App\Models\Projects;
 use App\Models\Resomes;
 use App\Models\Services;
 use App\Models\Skills;
+use App\Models\User;
 use GuzzleHttp\Psr7\Header;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class HomeController extends Controller
 {
-    function abol_fa() {
-       
+    function index( $name) {
+        try {
+            $User = User::where('user' , $name)->firstOrFail();
+            $User = $User->user;
+            $Information = Information::where('user',$User)->get();
+            $Links = Links::where('user',$User)->get(); 
+            $Counters = Counters::where('user',$User)->get();
+            $Services = Services::where('user',$User)->get();
+            
+          
+            $Skills = Skills::where('user',$User)->get()->select('image' , 'name','percentage');
+            
+            $Resomes = Resomes::where('user',$User)->get()->select('time','title','institute');
+          
+            $Education = Education::where('user',$User)->get()->select('time','title','institute');
+            $Projects = Projects::where('user',$User)->get();
+            $Comments = Comments::where('user',$User)->get();
 
-        $Information = Information::find(1);
-        $Links = Links::find(1);
-        $Counters = Counters::find(1);
-        $Services = Services::where('user','abol')->get();
-        $Skills = Skills::where('user','abol')->get()->select('image' , 'name','percentage');
-        $Resomes = Resomes::where('user','abol')->get()->select('time','title','institute');
-        $Resomes = Resomes::where('user','abol')->get()->select('time','title','institute');
-        $Education = Education::where('user','abol')->get()->select('time','title','institute');
-        $Projects = Projects::where('user','abol')->get();
-        $Comments = Comments::where('user','abol')->get();
+            return view('Home-fa',[
+                    "title"=>  $Information[0]['title'],
+                    "email"=>$Information[0]['email'],
+                    "name"=> $Information[0]['name'],
+                    "job1"=> $Information[0]['job1'],
+                    "job2"=>$Information[0]['job2'],
+                    "aboutmy"=> $Information[0]['aboutmy'],
+                    "address"=> $Information[0]['Address'],
+                    "number"=> $Information[0]['number'],
 
-        return view('Home-fa',[
-                "title"=>  $Information->title ,
-                "email"=>$Information->email,
-                "name"=> $Information->name,
-                "job1"=> $Information->job1,
-                "job2"=>$Information->job2,
-                "aboutmy"=> $Information->aboutmy,
-                "address"=> $Information->Address,
-                "number"=> $Information->number,
+                "links"=>[
+                    "resome"=> $Links[0]['resome'],
+                    "telegram"=>$Links[0]['telegram'],
+                    "instagram"=>$Links[0]['instagram'],
+                    "linkedin"=>$Links[0]['linkedin'],
+                    "github"=>$Links[0]['github'],
+                ],
+                "counters"=>[
+                    "hostory"=>$Counters[0]['history'],
+                    "completion"=>$Counters[0]['completion'],
+                    "satisfied"=>$Counters[0]['satisfied'],
+                    "experience"=>$Counters[0]['experience'],
+                ],
+                "Services"=>$Services,
+                "Skills"=> $Skills ,
+                "Resomes"=> $Resomes ,
+                "Education"=> $Education ,
+                "Projects"=> $Projects ,
+                "Comments"=> $Comments ,
+            ]);
 
-            "links"=>[
-                "resome"=> $Links->resome,
-                "telegram"=>$Links->telegram,
-                "instagram"=>$Links->instagram,
-                "linkedin"=>$Links->linkedin,
-                "github"=>$Links->github,
-            ],
-            "counters"=>[
-                "hostory"=>$Counters->history,
-                "completion"=>$Counters->completion,
-                "satisfied"=>$Counters->satisfied,
-                "experience"=>$Counters->experience,
-            ],
-            "Services"=>$Services,
-            "Skills"=> $Skills ,
-            "Resomes"=> $Resomes ,
-            "Education"=> $Education ,
-            "Projects"=> $Projects ,
-            "Comments"=> $Comments ,
-        ]);
+
+        } catch (ModelNotFoundException $e) {
+           abort(404);
+        }
+        
     }
-    function mehran_fa() {
-
-        $Information = Information::find(2);
-        $Links = Links::find(2);
-        $Counters = Counters::find(2);
-        $Services = Services::where('user','mehran')->get();
-        $Skills = Skills::where('user','mehran')->get()->select('image' , 'name','percentage');
-        $Resomes = Resomes::where('user','mehran')->get()->select('time','title','institute');
-        $Resomes = Resomes::where('user','mehran')->get()->select('time','title','institute');
-        $Education = Education::where('user','mehran')->get()->select('time','title','institute');
-        $Projects = Projects::where('user','mehran')->get();
-        $Comments = Comments::where('user','mehran')->get();
-
-        return view('Home-fa',[
-                "title"=>  $Information->title ,
-                "email"=>$Information->email,
-                "name"=> $Information->name,
-                "job1"=> $Information->job1,
-                "job2"=>$Information->job2,
-                "aboutmy"=> $Information->aboutmy,
-                "address"=> $Information->Address,
-                "number"=> $Information->number,
-
-            "links"=>[
-                "resome"=> $Links->resome,
-                "telegram"=>$Links->telegram,
-                "instagram"=>$Links->instagram,
-                "linkedin"=>$Links->linkedin,
-                "github"=>$Links->github,
-            ],
-            "counters"=>[
-                "hostory"=>$Counters->history,
-                "completion"=>$Counters->completion,
-                "satisfied"=>$Counters->satisfied,
-                "experience"=>$Counters->experience,
-            ],
-            "Services"=>$Services,
-            "Skills"=> $Skills ,
-            "Resomes"=> $Resomes ,
-            "Education"=> $Education ,
-            "Projects"=> $Projects ,
-            "Comments"=> $Comments ,
-        ]);
-
-
-
-
-    }
-
-    function amin_fa() {
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
 
 
     function sendmesage(Request $request) {
