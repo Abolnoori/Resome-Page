@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
 
-  <body class="light-mode">
+  <body class="dark-mode">
     <div id="loader-container"><div id="loader"></div></div>
 
     <!-- Preloader Area End -->
@@ -95,7 +95,7 @@
               <div class="button-dark-light">
                 <img
                   id="toggle-theme"
-                  src="assets/img/icons/dark-icon.svg"
+                  src="assets/img/icons/light-icon.svg"
                   alt=""
                 />
               </div>

@@ -32,7 +32,7 @@ window.addEventListener("load", function () {
 
 
 // ابتدا حالت روشن را تنظیم کنید
-document.body.classList.add("light-mode");
+document.body.classList.add("dark-mode");
 
 
 

@@ -30,12 +30,8 @@ class HomeController extends Controller
             $Links = Links::where('user',$User)->get(); 
             $Counters = Counters::where('user',$User)->get();
             $Services = Services::where('user',$User)->get();
-            
-          
             $Skills = Skills::where('user',$User)->get()->select('image' , 'name','percentage');
-            
             $Resomes = Resomes::where('user',$User)->get()->select('time','title','institute');
-          
             $Education = Education::where('user',$User)->get()->select('time','title','institute');
             $Projects = Projects::where('user',$User)->get();
             $Comments = Comments::where('user',$User)->get();
@@ -73,7 +69,7 @@ class HomeController extends Controller
 
 
         } catch (ModelNotFoundException $e) {
-           abort(404);
+           return view('404' , ['name'=> $name]);
         }
         
     }
