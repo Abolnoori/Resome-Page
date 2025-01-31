@@ -16,7 +16,7 @@
                 </h1>
 
                 <div class="hero-image-box d-md-none text-center">
-                  <img src="assets/img/hero/me.png" alt="" />
+                  <img src="assets/img/hero/{{ $image }}" alt="" style="width: 300px; height: 320px;" />
                 </div>
 
                 <p class="lead">
@@ -46,7 +46,7 @@
             </div>
             <div class="col-md-6 d-none d-md-block">
               <div class="hero-image-box text-center">
-                <img src="assets/img/hero/me.png" alt="" />
+                <img src="assets/img/hero/{{ $image }}" alt="" style="width: 470px; height: 520px;" />
               </div>
             </div>
           </div>

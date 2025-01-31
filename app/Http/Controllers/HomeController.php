@@ -40,6 +40,7 @@ class HomeController extends Controller
                     "title"=>  $Information[0]['title'],
                     "email"=>$Information[0]['email'],
                     "name"=> $Information[0]['name'],
+                    "image"=> $Information[0]['image'],
                     "job1"=> $Information[0]['job1'],
                     "job2"=>$Information[0]['job2'],
                     "aboutmy"=> $Information[0]['aboutmy'],

@@ -26,7 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white; /* پس‌زمینه‌ی سفید */
+  background-color: #0f0715; /* پس‌زمینه‌ی سفید */
   backdrop-filter: blur(10px); /* بلور کردن پس‌زمینه */
   z-index: 9999;
   animation: fadeOut 2s ease-out forwards; /* انیمیشن محو شدن */
