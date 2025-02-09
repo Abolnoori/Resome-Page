@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('user');
             $table->string('title');
             $table->string('paragraph');
-
             $table->timestamps();
         });
     }

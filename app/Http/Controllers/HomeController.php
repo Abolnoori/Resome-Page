@@ -35,8 +35,8 @@ class HomeController extends Controller
             $Education = Education::where('user',$User)->get()->select('time','title','institute');
             $Projects = Projects::where('user',$User)->get();
             $Comments = Comments::where('user',$User)->get();
-
             return view('Home-fa',[
+                    "user"=>  $Information[0]['user'],
                     "title"=>  $Information[0]['title'],
                     "email"=>$Information[0]['email'],
                     "name"=> $Information[0]['name'],
@@ -91,7 +91,6 @@ class HomeController extends Controller
     ]);
 
     // دریافت مقادیر ورودی بعد از ولیدیشن
-    $ResomeUser = $request->input('ResomeUser');
     $name = $request->input('conName');
     $nameL = $request->input('conLName');
     $email = $request->input('conEmail');
@@ -99,10 +98,8 @@ class HomeController extends Controller
     $service = $request->input('conService');
     $message = $request->input('conMessage');
     $UserName = $request->input('Reco');
-
-
-    $User = Bot::where('user', $ResomeUser )->get()->select('userid' , 'token');
-
+ 
+    $User = Bot::where('user', $UserName )->get()->select('userid' , 'token');
       $botToken = $User[0]['token']; // جایگزین کنید با توکن ربات شما
       $chatId = $User[0]['userid']; // جایگزین کنید با آیدی چت شما
       $text = "

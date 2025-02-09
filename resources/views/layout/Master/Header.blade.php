@@ -31,11 +31,10 @@
     <link rel="stylesheet" href="assets/css/light-mode.css" />
     <link rel="stylesheet" href="assets/css/responsive.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
-     
   </head>
 
-  <body class="dark-mode">
-    <div id="loader-container"><div id="loader"></div></div>
+  <body class="">
+    <div id="loader-container" class=""><div id="loader"></div></div>
 
     <!-- Preloader Area End -->
 
@@ -93,9 +92,9 @@
                 /></a>
               </div>
               <div class="header-bine"></div>
-              <div class="button-dark-light">
+              <div class="button-dark-light"  id="toggle-theme">
                 <img
-                  id="toggle-theme"
+                 id="theme-icon"
                   src="assets/img/icons/light-icon.svg"
                   alt=""
                 />

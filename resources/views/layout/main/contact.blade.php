@@ -115,7 +115,7 @@
                                             type="text"
                                             name="ResomeUser"
                                             id="ResomeUser"
-                                            value="{{ $name }}"
+                                            value="{{ $user }}"
                                             />
 
                                         <input

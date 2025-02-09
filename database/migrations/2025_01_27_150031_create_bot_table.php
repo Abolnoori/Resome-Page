@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('token');
         });
     }
-
     /**
      * Reverse the migrations.
      */

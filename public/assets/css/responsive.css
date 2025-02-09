@@ -710,7 +710,7 @@
 	}
 	.portfolio-box .portfolio-item {
 		width: 100%;
-		padding: 25px 15px 0 15px;
+		padding: 25px 15px 25px 15px;
 		margin-bottom: 30px;
 	}
 	.portfolio-box .content-box {

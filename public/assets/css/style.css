@@ -1,3 +1,4 @@
+
 .button-dark-light img {
   width: 32px;
   height: 32px;
@@ -12,27 +13,24 @@
   gap: 12px;
   align-items: center;
 }
-/* styles.css */
 
-/* styles.css */
 
 #loader-container {
-  position: absolute;
+  position: fixed;
   height: 100vh;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   display: flex;
+  background-color: #0f0715;
   justify-content: center;
   align-items: center;
-  background-color: #0f0715; /* پس‌زمینه‌ی سفید */
   backdrop-filter: blur(10px); /* بلور کردن پس‌زمینه */
   z-index: 9999;
   animation: fadeOut 2s ease-out forwards; /* انیمیشن محو شدن */
   animation-delay: 2s; /* شروع انیمیشن بعد از 2 ثانیه */
 }
-
 #loader {
   width: 50px;
   height: 50px;

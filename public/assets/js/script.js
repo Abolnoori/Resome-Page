@@ -1,22 +1,4 @@
 // script.js
-document.getElementById("toggle-theme").addEventListener("click", function () {
-  document.body.classList.toggle("dark-mode");
-  document.body.classList.toggle("light-mode");
-
-  // تغییر مسیر تصویر
-  const themeIcon = document.getElementById("toggle-theme");
-  if (document.body.classList.contains("dark-mode")) {
-    themeIcon.src = "assets/img/icons/light-icon.svg";
-  } else {
-    themeIcon.src = "assets/img/icons/dark-icon.svg";
-  }
-});
-
-
-
-
-
-// script.js
 window.addEventListener("load", function () {
     setTimeout(function () {
         const loaderContainer = document.getElementById("loader-container");
@@ -24,39 +6,39 @@ window.addEventListener("load", function () {
     }, 2500);
 });
 
+// انتخاب دکمه و آیکون
+const toggleThemeBtn = document.getElementById("toggle-theme");
+const themeIcon = document.getElementById("theme-icon");
 
+// بررسی تم ذخیره‌شده در Local Storage
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+    document.body.classList.add(savedTheme);
+    themeIcon.src =
+        savedTheme === "dark-mode"
+            ? "assets/img/icons/light-icon.svg"
+            : "assets/img/icons/dark-icon.svg";
+} else {
+    // اگر تم ذخیره‌شده وجود نداشته باشد، تم پیش‌فرض را تنظیم کنید
+    document.body.classList.add("dark-mode");
 
+    localStorage.setItem("theme", "dark-mode");
+}
 
+// تغییر تم با کلیک روی دکمه
+toggleThemeBtn.addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+    document.body.classList.toggle("light-mode");
 
+    // ذخیره تم در Local Storage
+    const currentTheme = document.body.classList.contains("dark-mode")
+        ? "dark-mode"
+        : "light-mode";
+    localStorage.setItem("theme", currentTheme);
 
-
-
-// ابتدا حالت روشن را تنظیم کنید
-document.body.classList.add("dark-mode");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // تغییر مسیر تصویر آیکون
+    themeIcon.src =
+        currentTheme === "dark-mode"
+            ? "assets/img/icons/light-icon.svg"
+            : "assets/img/icons/dark-icon.svg";
+});
