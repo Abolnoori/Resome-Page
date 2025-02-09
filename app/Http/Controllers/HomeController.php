@@ -22,6 +22,25 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class HomeController extends Controller
 {
+
+
+function indexen() {
+     return view('Home-en');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function index( $name) {
         try {
             $User = User::where('user' , $name)->firstOrFail();
