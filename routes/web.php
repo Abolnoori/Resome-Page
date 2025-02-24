@@ -10,13 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/en',[HomeController::class , 'indexen']);
-Route::get('/{name}',[HomeController::class , 'index']);
-
-
-
-
-Route::post('/SendMesage',[HomeController::class , 'sendmesage']);
+// Route::get('/{name}',[HomeController::class , 'index']);
+// Route::post('/SendMesage',[HomeController::class , 'sendmesage']);
 
 
 

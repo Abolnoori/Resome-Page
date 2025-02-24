@@ -20,12 +20,11 @@ use App\Models\User;
 use GuzzleHttp\Psr7\Header;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class HomeController extends Controller
+class APIController extends Controller
 {
-
-
     function index($name) {
-        try {
+
+          try {
             $User = User::where('user' , $name)->firstOrFail();
             $User = $User->user;
             $Information = Information::where('user',$User)->get();
@@ -37,42 +36,47 @@ class HomeController extends Controller
             $Education = Education::where('user',$User)->get()->select('time','title','institute');
             $Projects = Projects::where('user',$User)->get();
             $Comments = Comments::where('user',$User)->get();
-            return view('Home-fa',[
-                    "user"=>  $Information[0]['user'],
-                    "title"=>  $Information[0]['title'],
-                    "email"=>$Information[0]['email'],
-                    "name"=> $Information[0]['name'],
-                    "image"=> $Information[0]['image'],
-                    "job1"=> $Information[0]['job1'],
-                    "job2"=>$Information[0]['job2'],
-                    "aboutmy"=> $Information[0]['aboutmy'],
-                    "address"=> $Information[0]['Address'],
-                    "number"=> $Information[0]['number'],
-
-                "links"=>[
-                    "resome"=> $Links[0]['resome'],
-                    "telegram"=>$Links[0]['telegram'],
-                    "instagram"=>$Links[0]['instagram'],
-                    "linkedin"=>$Links[0]['linkedin'],
-                    "github"=>$Links[0]['github'],
-                ],
-                "counters"=>[
-                    "hostory"=>$Counters[0]['history'],
-                    "completion"=>$Counters[0]['completion'],
-                    "satisfied"=>$Counters[0]['satisfied'],
-                    "experience"=>$Counters[0]['experience'],
-                ],
-                "Services"=>$Services,
-                "Skills"=> $Skills ,
-                "Resomes"=> $Resomes ,
-                "Education"=> $Education ,
-                "Projects"=> $Projects ,
-                "Comments"=> $Comments ,
-            ]);
 
 
-        } catch (ModelNotFoundException $e) {
-           return view('404' , ['name'=> $name]);
+        return response()->json([
+                            "Lang" =>  $name,
+                            "user"=>  $Information[0]['user'],
+                            "title"=>  $Information[0]['title'],
+                            "email"=>$Information[0]['email'],
+                            "name"=> $Information[0]['name'],
+                            "image"=> $Information[0]['image'],
+                            "job1"=> $Information[0]['job1'],
+                            "job2"=>$Information[0]['job2'],
+                            "aboutmy"=> $Information[0]['aboutmy'],
+                            "address"=> $Information[0]['Address'],
+                            "number"=> $Information[0]['number'],
+
+                        "links"=>[
+                            "resome"=> $Links[0]['resome'],
+                            "telegram"=>$Links[0]['telegram'],
+                            "instagram"=>$Links[0]['instagram'],
+                            "linkedin"=>$Links[0]['linkedin'],
+                            "github"=>$Links[0]['github'],
+                        ],
+                        "counters"=>[
+                            "hostory"=>$Counters[0]['history'],
+                            "completion"=>$Counters[0]['completion'],
+                            "satisfied"=>$Counters[0]['satisfied'],
+                            "experience"=>$Counters[0]['experience'],
+                        ],
+                        "Services"=>$Services,
+                        "Skills"=> $Skills ,
+                        "Resomes"=> $Resomes ,
+                        "Education"=> $Education ,
+                        "Projects"=> $Projects ,
+                        "Comments"=> $Comments ,
+                    ],200);
+
+
+
+
+            } catch (ModelNotFoundException $e) {
+            return response()->json( ['Eror'=>'Page '. $name .' Not Found'] ,404);
         }
         
     }
@@ -89,7 +93,7 @@ class HomeController extends Controller
         'conPhone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
         'conService' => 'required|string|max:255',
         'conMessage' => 'required|string|max:1000',
-        
+
     ]);
 
     // دریافت مقادیر ورودی بعد از ولیدیشن
@@ -136,9 +140,26 @@ $message
       $result = file_get_contents($url, false, $context);
 
 
-       return redirect('/'.$UserName);
-
-
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
