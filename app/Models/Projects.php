@@ -8,6 +8,6 @@ class Projects extends Model
 {
         protected $fillable = ['user','image','proname','paragraph'];
     
-
+        protected $hidden = ['id' , 'created_at' , 'updated_at'];
 
 }

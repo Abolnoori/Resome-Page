@@ -8,13 +8,20 @@ use App\Models\Bot;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use App\Models\Comments;
+use App\Models\CommentsEn;
 use App\Models\Counters;
 use App\Models\Education;
+use App\Models\EducationEn;
 use App\Models\Information;
+use App\Models\InformationEn;
 use App\Models\Links;
 use App\Models\Projects;
+use App\Models\ProjectsEn;
 use App\Models\Resomes;
+use App\Models\ResomesEn;
 use App\Models\Services;
+use App\Models\ServicesEn;
+use App\Models\Setting;
 use App\Models\Skills;
 use App\Models\User;
 use GuzzleHttp\Psr7\Header;
@@ -22,12 +29,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class APIController extends Controller
 {
+
     function index($name) {
 
           try {
+            $Setting = Setting::where('user' , $name)->firstOrFail();
+
+            if ($Setting['def-lang'] == 'fa') {
             $User = User::where('user' , $name)->firstOrFail();
             $User = $User->user;
-            $Information = Information::where('user',$User)->get();
+            $Information = Information::where('user',$User)->firstOrFail();
             $Links = Links::where('user',$User)->get(); 
             $Counters = Counters::where('user',$User)->get();
             $Services = Services::where('user',$User)->get();
@@ -35,21 +46,31 @@ class APIController extends Controller
             $Resomes = Resomes::where('user',$User)->get()->select('time','title','institute');
             $Education = Education::where('user',$User)->get()->select('time','title','institute');
             $Projects = Projects::where('user',$User)->get();
-            $Comments = Comments::where('user',$User)->get();
+            $Comments = Comments::where('user',$User)->get();   
+            }else{
 
+            $User = User::where('user' , $name)->firstOrFail();
+            $User = $User->user;
+            $Information = InformationEn::where('user',$User)->firstOrFail();
+            $Links = Links::where('user',$User)->get(); 
+            $Counters = Counters::where('user',$User)->get();
+            $Services = ServicesEn::where('user',$User)->get();
+            $Skills = Skills::where('user',$User)->get()->select('image' , 'name','percentage');
+            $Resomes = ResomesEn::where('user',$User)->get()->select('time','title','institute');
+            $Education = EducationEn::where('user',$User)->get()->select('time','title','institute');
+            $Projects = ProjectsEn::where('user',$User)->get();
+            $Comments = CommentsEn::where('user',$User)->get();  
+            }
 
-        return response()->json([
-                            "Lang" =>  $name,
-                            "user"=>  $Information[0]['user'],
-                            "title"=>  $Information[0]['title'],
-                            "email"=>$Information[0]['email'],
-                            "name"=> $Information[0]['name'],
-                            "image"=> $Information[0]['image'],
-                            "job1"=> $Information[0]['job1'],
-                            "job2"=>$Information[0]['job2'],
-                            "aboutmy"=> $Information[0]['aboutmy'],
-                            "address"=> $Information[0]['Address'],
-                            "number"=> $Information[0]['number'],
+            // Hidden
+            $Setting->makeHidden(['id' ,'bot-token', 'bot-id', 'created_at' , 'updated_at']);
+            $Information->makeHidden(['id' , 'created_at' , 'updated_at']);
+
+            // start response
+
+            return response()->json([
+                            "setting"=> $Setting,
+                            'information'=>$Information,
 
                         "links"=>[
                             "resome"=> $Links[0]['resome'],
@@ -64,22 +85,51 @@ class APIController extends Controller
                             "satisfied"=>$Counters[0]['satisfied'],
                             "experience"=>$Counters[0]['experience'],
                         ],
-                        "Services"=>$Services,
-                        "Skills"=> $Skills ,
-                        "Resomes"=> $Resomes ,
-                        "Education"=> $Education ,
-                        "Projects"=> $Projects ,
-                        "Comments"=> $Comments ,
+                        "services"=>$Services,
+                        "skills"=> $Skills ,
+                        "resomes"=> $Resomes ,
+                        "education"=> $Education ,
+                        "projects"=> $Projects ,
+                        "comments"=> $Comments ,
                     ],200);
 
-
-
+            // end response
 
             } catch (ModelNotFoundException $e) {
             return response()->json( ['Eror'=>'Page '. $name .' Not Found'] ,404);
         }
         
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     function sendmesage(Request $request) {
@@ -106,8 +156,8 @@ class APIController extends Controller
     $UserName = $request->input('Reco');
 
     $User = Bot::where('user', $UserName )->get()->select('userid' , 'token');
-      $botToken = $User[0]['token']; // جایگزین کنید با توکن ربات شما
-      $chatId = $User[0]['userid']; // جایگزین کنید با آیدی چت شما
+      $botToken = $User[0]['token'];
+      $chatId = $User[0]['userid'];
       $text = "
 📩 New Message  $name
 
@@ -142,24 +192,6 @@ $message
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
