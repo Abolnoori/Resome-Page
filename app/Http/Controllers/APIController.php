@@ -30,76 +30,51 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class APIController extends Controller
 {
 
+
     function index($name) {
+        try {
+            $User = User::where('user', $name)->firstOrFail()->user;
+            $Setting = Setting::where('user', $User)->firstOrFail();
+            $Setting->makeHidden(['id', 'bot-token', 'bot-id', 'created_at', 'updated_at']);
 
-          try {
-            $Setting = Setting::where('user' , $name)->firstOrFail();
+            $data = [];
+            $langs = [];
 
-            if ($Setting['def-lang'] == 'fa') {
-            $User = User::where('user' , $name)->firstOrFail();
-            $User = $User->user;
-            $Information = Information::where('user',$User)->firstOrFail();
-            $Links = Links::where('user',$User)->get(); 
-            $Counters = Counters::where('user',$User)->get();
-            $Services = Services::where('user',$User)->get();
-            $Skills = Skills::where('user',$User)->get()->select('image' , 'name','percentage');
-            $Resomes = Resomes::where('user',$User)->get()->select('time','title','institute');
-            $Education = Education::where('user',$User)->get()->select('time','title','institute');
-            $Projects = Projects::where('user',$User)->get();
-            $Comments = Comments::where('user',$User)->get();   
-            }else{
-
-            $User = User::where('user' , $name)->firstOrFail();
-            $User = $User->user;
-            $Information = InformationEn::where('user',$User)->firstOrFail();
-            $Links = Links::where('user',$User)->get(); 
-            $Counters = Counters::where('user',$User)->get();
-            $Services = ServicesEn::where('user',$User)->get();
-            $Skills = Skills::where('user',$User)->get()->select('image' , 'name','percentage');
-            $Resomes = ResomesEn::where('user',$User)->get()->select('time','title','institute');
-            $Education = EducationEn::where('user',$User)->get()->select('time','title','institute');
-            $Projects = ProjectsEn::where('user',$User)->get();
-            $Comments = CommentsEn::where('user',$User)->get();  
+            if ($Setting['bilingual'] == 'true' || $Setting['def-lang'] == 'fa') {
+                $langs[] = 'fa';
+            }
+            if ($Setting['bilingual'] == 'true' || $Setting['def-lang'] == 'en') {
+                $langs[] = 'en';
             }
 
-            // Hidden
-            $Setting->makeHidden(['id' ,'bot-token', 'bot-id', 'created_at' , 'updated_at']);
-            $Information->makeHidden(['id' , 'created_at' , 'updated_at']);
+            foreach ($langs as $lang) {
+                $infoClass = $lang == 'fa' ? Information::class : InformationEn::class;
+                $servicesClass = $lang == 'fa' ? Services::class : ServicesEn::class;
+                $resomesClass = $lang == 'fa' ? Resomes::class : ResomesEn::class;
+                $educationClass = $lang == 'fa' ? Education::class : EducationEn::class;
+                $projectsClass = $lang == 'fa' ? Projects::class : ProjectsEn::class;
+                $commentsClass = $lang == 'fa' ? Comments::class : CommentsEn::class;
 
-            // start response
+                $data[$lang] = [
+                    "information" => $infoClass::where('user', $User)->firstOrFail()->makeHidden(['id', 'created_at', 'updated_at']),
+                    "links" => Links::where('user', $User)->first(['resome', 'telegram', 'instagram', 'linkedin', 'github']),
+                    "counters" => Counters::where('user', $User)->first(['history', 'completion', 'satisfied', 'experience']),
+                    "services" => $servicesClass::where('user', $User)->get(),
+                    "skills" => Skills::where('user', $User)->get(['image', 'name', 'percentage']),
+                    "resomes" => $resomesClass::where('user', $User)->get(['time', 'title', 'institute']),
+                    "education" => $educationClass::where('user', $User)->get(['time', 'title', 'institute']),
+                    "projects" => $projectsClass::where('user', $User)->get(),
+                    "comments" => $commentsClass::where('user', $User)->get(),
+                ];
+            }
 
-            return response()->json([
-                            "setting"=> $Setting,
-                            'information'=>$Information,
+            return response()->json(["setting" => $Setting] + $data, 200);
 
-                        "links"=>[
-                            "resome"=> $Links[0]['resome'],
-                            "telegram"=>$Links[0]['telegram'],
-                            "instagram"=>$Links[0]['instagram'],
-                            "linkedin"=>$Links[0]['linkedin'],
-                            "github"=>$Links[0]['github'],
-                        ],
-                        "counters"=>[
-                            "hostory"=>$Counters[0]['history'],
-                            "completion"=>$Counters[0]['completion'],
-                            "satisfied"=>$Counters[0]['satisfied'],
-                            "experience"=>$Counters[0]['experience'],
-                        ],
-                        "services"=>$Services,
-                        "skills"=> $Skills ,
-                        "resomes"=> $Resomes ,
-                        "education"=> $Education ,
-                        "projects"=> $Projects ,
-                        "comments"=> $Comments ,
-                    ],200);
-
-            // end response
-
-            } catch (ModelNotFoundException $e) {
-            return response()->json( ['Eror'=>'Page '. $name .' Not Found'] ,404);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['Error' => 'Page ' . $name . ' Not Found'], 404);
         }
-        
     }
+  
 
 
 
