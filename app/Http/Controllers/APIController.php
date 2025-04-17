@@ -29,6 +29,38 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class APIController extends Controller
 {
+/**
+ * @OA\Get(
+ *     path="/api/{name}",
+ *     summary="Get multilingual portfolio data for a user",
+ *     description="Fetches user's public portfolio information including settings, services, skills, education, etc. in one or two languages (FA/EN).",
+ *     operationId="getUserPage",
+ *     tags={"User Portfolio"},
+ *     @OA\Parameter(
+ *         name="name",
+ *         in="path",
+ *         description="The username of the user (e.g., 'john_doe')",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful response with user's portfolio data",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="setting", type="object"),
+ *             @OA\Property(property="fa", type="object", description="Data in Persian (if available)"),
+ *             @OA\Property(property="en", type="object", description="Data in English (if available)")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="User not found",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="Error", type="string", example="Page john_doe Not Found")
+ *         )
+ *     )
+ * )
+ */
 
 
     function index($name) {
@@ -80,28 +112,34 @@ class APIController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * @OA\Post(
+ *     path="/api/contact/send",
+ *     summary="Send contact message",
+ *     tags={"Contact"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"Reco","conName","conLName","conEmail","conPhone","conService","conMessage"},
+ *             @OA\Property(property="Reco", type="string", example="john_doe"),
+ *             @OA\Property(property="conName", type="string", example="Ali"),
+ *             @OA\Property(property="conLName", type="string", example="Rezaei"),
+ *             @OA\Property(property="conEmail", type="string", format="email", example="ali@example.com"),
+ *             @OA\Property(property="conPhone", type="string", example="+989123456789"),
+ *             @OA\Property(property="conService", type="string", example="Web Design"),
+ *             @OA\Property(property="conMessage", type="string", example="I'd like a website.")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Success"
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Validation error"
+ *     )
+ * )
+ */
 
 
 

@@ -1,0 +1,148 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Resume Website API Documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/{name}": {
+            "get": {
+                "tags": [
+                    "User Portfolio"
+                ],
+                "summary": "Get multilingual portfolio data for a user",
+                "description": "Fetches user's public portfolio information including settings, services, skills, education, etc. in one or two languages (FA/EN).",
+                "operationId": "getUserPage",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The username of the user (e.g., 'john_doe')",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with user's portfolio data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "setting": {
+                                            "type": "object"
+                                        },
+                                        "fa": {
+                                            "description": "Data in Persian (if available)",
+                                            "type": "object"
+                                        },
+                                        "en": {
+                                            "description": "Data in English (if available)",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "Error": {
+                                            "type": "string",
+                                            "example": "Page john_doe Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/contact/send": {
+            "post": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Send contact message",
+                "operationId": "c57649c0609cb4ff54bbd5214255d51a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "Reco",
+                                    "conName",
+                                    "conLName",
+                                    "conEmail",
+                                    "conPhone",
+                                    "conService",
+                                    "conMessage"
+                                ],
+                                "properties": {
+                                    "Reco": {
+                                        "type": "string",
+                                        "example": "john_doe"
+                                    },
+                                    "conName": {
+                                        "type": "string",
+                                        "example": "Ali"
+                                    },
+                                    "conLName": {
+                                        "type": "string",
+                                        "example": "Rezaei"
+                                    },
+                                    "conEmail": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "ali@example.com"
+                                    },
+                                    "conPhone": {
+                                        "type": "string",
+                                        "example": "+989123456789"
+                                    },
+                                    "conService": {
+                                        "type": "string",
+                                        "example": "Web Design"
+                                    },
+                                    "conMessage": {
+                                        "type": "string",
+                                        "example": "I'd like a website."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "User Portfolio",
+            "description": "User Portfolio"
+        },
+        {
+            "name": "Contact",
+            "description": "Contact"
+        }
+    ]
+}
